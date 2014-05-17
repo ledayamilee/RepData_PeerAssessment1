@@ -1,16 +1,63 @@
 # Reproducible Research: Peer Assessment 1
 
+---
 
 ## Loading and preprocessing the data
 
+Read in the data.
+```{r; echo:TRUE}
+activity <- read.csv('activity.csv')
+```
 
+Convert the date columns.
+```{r}
+library(lubridate)
+activity <- transform(activity, date=ymd(activity$date))
+```
+
+The numbering of the intervals is funny. For example, it goes from 55 to 100. 55 represents the interval from 12:55-1:00 am, and 100 represents the interval from 1:00-1:05 am. To make interpreting graphs and results easier, I'll just convert each interval to the actual start time.
+```{r}
+activity <- transform(activity, 
+                      interval=hm(formatC(interval/100, digits=2, format='f')))
+```
 
 ## What is mean total number of steps taken per day?
 
+First, calculate the mean number of steps for each day:
+```{r}
+total.steps <- tapply(activity$steps, activity$date, sum, na.rm=TRUE)
+```
+
+Let's look at the mean and median for the total steps per day:
+```{r}
+mean(total.steps)
+median(total.steps)
+```
+
+And let's take a look at the distribution of total number of steps per day with a histogram:
+```{r}
+library(ggplot2)
+qplot(total.steps, xlab='Total steps', ylab='Frequency')
+```
 
 
 ## What is the average daily activity pattern?
 
+First calculate the average for each five minute period.
+```{r}
+
+# There is some kind of issue with the intervals not working as factors...
+daily <- tapply(activity$steps, activity$interval, mean, na.rm=TRUE)
+daily.df <- data.frame(interval)
+```
+
+Now let's look at a graph of a "normal" day.
+```{r}
+ggplot(daily.df, aes(interval, mean.steps)) +
+    geom_line() + 
+    xlab('Interval') +
+    ylab('Mean number of steps')
+```
 
 
 ## Imputing missing values
