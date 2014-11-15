@@ -25,6 +25,8 @@ stepsdate <- aggregate(steps ~ date, data = data1, FUN = sum, na.rm = TRUE)
 hist(stepsdate$steps, main = "Total number of steps taken each day", xlab = "day", col = "gray")
 ```
 
+![plot of chunk histogram](figure/histogram.png) 
+
 #####2. Calculate and report the mean and median total number of steps taken per day
 ```r
 mean(stepsdate$steps)
