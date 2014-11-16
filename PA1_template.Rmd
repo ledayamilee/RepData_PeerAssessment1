@@ -30,8 +30,14 @@ hist(stepsdate$steps, main = "Total number of steps taken each day", xlab = "day
 #####2. Calculate and report the mean and median total number of steps taken per day
 ```r
 mean(stepsdate$steps)
+```
+[1] 9354
+
+```r
 median(stepsdate$steps)
 ```
+[1] 10395
+
 
 ## What is the average daily activity pattern?
 
@@ -42,12 +48,15 @@ plot(row.names(timeseries), timeseries, type = "l", xlab = "5-minute interval",
      ylab = "Averaged across all Days", main = "Average number of steps taken", 
      col = "gray")
 ```
+![plot of chunk timeseriesplot](figure/timeseries.png) 
 
 #####2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 ```r
 intervalmin <- which.max(timeseries)
 names(intervalmin)
 ```
+[1] "08:35"
+
 
 ## Imputing missing values
 
@@ -55,6 +64,7 @@ names(intervalmin)
 ```r
 sum(is.na(data1))
 ```
+[1] 2304
 
 #####2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 ```r
@@ -82,10 +92,18 @@ data2$steps <- nadata
 ```r
 totalsteps <- aggregate(steps ~ date, data = data2, sum, na.rm = TRUE)
 hist(totalsteps$steps, main = "Total number of steps taken each day", xlab = "day", col = "gray")
+```
+![plot of chunk histogram_imputed](figure/histogramtotalsteps.png)
+
+```r
 mean(totalsteps$steps)
+```
+[1] 10766
+
+```r
 median(totalsteps$steps)
 ```
-
+[1] 10766
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -114,4 +132,4 @@ names(stepday) <- c("interval", "timeday", "steps")
 xyplot(steps ~ interval | timeday, stepday, type = "l", layout = c(1, 2), 
        xlab = "5 minute Interval", ylab = "Number of steps taken")
 ```
-
+![plot of chunk timeday](figure/timeday.png) 
